@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#game-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: cadetblue;
+}
+
+#controls-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+
+    
+}
+
+#controls-container button{
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 20px;
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
