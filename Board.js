@@ -12,12 +12,20 @@ const objectsMapper = {
 	o: 4,
 };
 
+const rewards = {
+	goal: 5,
+	hole: -10,
+	wall: -1,
+	empty: -0.1,
+};
+
 export class Board {
 	constructor(dimensions, recipe) {
 		this.dimensions = dimensions;
 		this.recipe = recipe;
 		this.agent = null;
 		this.board = this.generateBoard(recipe);
+		this.hasWon = false;
 		this.drawBoard(this.board);
 	}
 
@@ -53,14 +61,18 @@ export class Board {
 				this.agent = agent;
 				return agent;
 			case 1:
-				return new Goal(5);
+				return new Goal(rewards.goal);
 			case 2:
-				return new Hole(-5);
+				return new Hole(rewards.hole);
 			case 3:
-				return new Wall(-1);
+				return new Wall(rewards.wall);
 			case 4:
-				return new Empty(0);
+				return new Empty(rewards.empty);
 		}
+	}
+
+	getReward(position) {
+		return this.board[position.y][position.x].getReward;
 	}
 
 	getAgentPosition() {
@@ -102,10 +114,28 @@ export class Board {
 		const wasHole = this.recipe[agentPosition.y][agentPosition.x] === "h";
 
 		if (next.type !== "wall") {
-			this.board[agentPosition.y][agentPosition.x] = wasHole ? new Hole(-5) : new Empty(0);
+			this.board[agentPosition.y][agentPosition.x] = wasHole ? new Hole(rewards.hole) : new Empty(rewards.empty);
 			this.board[nextPosition.y][nextPosition.x] = agent;
 			this.drawBoard(this.board);
+
+			if (next.type === "hole") {
+				this.resetBoard();
+			}
 		}
+	}
+
+	resetBoard() {
+		this.board = this.generateBoard(this.recipe);
+		this.drawBoard(this.board);
+	}
+
+	checkIfWon() {
+		const agentPosition = this.getAgentPosition();
+		if (this.recipe[agentPosition.y][agentPosition.x] === "g") {
+			this.resetBoard();
+			return true;
+		}
+		return false;
 	}
 
 	moveAgent(move) {
