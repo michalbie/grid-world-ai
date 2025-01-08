@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 #game-container{
@@ -30,4 +31,57 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+#states-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: 50%;
+    border: 2px solid black;
+}
+
+#states-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    font-size: 30px;
+    color: white;
+    width: 100%;
+}
+
+
+.state {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+    font-size: 30px;
+    color: Black;
+    width: 100%;
+    border-bottom: 2px solid black;
+}
+
+.slidecontainer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+    width: 500px;
+}
+
+.slidecontainer > *
+{
+    display: flex;
+        flex: 1;
+}
+
+#exploration-value{
+   justify-content: center;
 }

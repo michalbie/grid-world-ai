@@ -14,7 +14,7 @@ const objectsMapper = {
 
 const rewards = {
 	goal: 5,
-	hole: -10,
+	hole: -15,
 	wall: -1,
 	empty: -0.1,
 };
@@ -57,6 +57,9 @@ export class Board {
 		type = objectsMapper[type];
 		switch (type) {
 			case 0:
+				if (this.agent) {
+					return this.agent;
+				}
 				const agent = new Agent(0);
 				this.agent = agent;
 				return agent;
@@ -124,7 +127,14 @@ export class Board {
 		}
 	}
 
+	clearBoard() {
+		const canvas = document.getElementById("game-canvas");
+		const ctx = canvas.getContext("2d");
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+	}
+
 	resetBoard() {
+		this.clearBoard();
 		this.board = this.generateBoard(this.recipe);
 		this.drawBoard(this.board);
 	}

@@ -1,11 +1,13 @@
 export class MazeGenerator {
-	constructor() {}
+	constructor() {
+		this.recipe = null;
+	}
 
 	generateMaze() {
 		let holes = Math.random() * 10;
 		let additionalWalls = Math.random() * 10;
-
 		let recipe = [];
+
 		for (let i = 0; i < 10; i++) {
 			recipe.push([]);
 			for (let j = 0; j < 10; j++) {
@@ -41,8 +43,7 @@ export class MazeGenerator {
 		y = Math.floor(Math.random() * 8) + 1;
 		recipe[y][x] = "g";
 
-		localStorage.setItem("recipe", JSON.stringify(recipe));
-
+		this.recipe = recipe;
 		return recipe;
 	}
 }

@@ -8,7 +8,7 @@ export class Agent extends Object {
 		super(reward);
 		this.type = "agent";
 		this.spritePath = "assets/agent.png";
-		this.qTable = new QTable(0.1, 0.9, 0.1, 10);
+		this.qTable = new QTable(0.1, 0.9, 0.7, 10);
 	}
 
 	makeMove(board, agentPosition) {

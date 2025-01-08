@@ -7,8 +7,8 @@ export class QTable {
 		this.explorationRate = e;
 		this.boardSize = boardSize;
 		this.previousPosition = null;
-		this.q = localStorage.getItem("qTable") ? JSON.parse(localStorage.getItem("qTable")) : this.initializeQTable();
-		console.log(this.q);
+		this.q = this.initializeQTable();
+		this.initializeExplorationSlider();
 	}
 
 	initializeQTable() {
@@ -25,6 +25,16 @@ export class QTable {
 			}
 		}
 		return tab;
+	}
+
+	initializeExplorationSlider() {
+		const slider = document.getElementById("exploration-slider");
+		slider.value = this.explorationRate;
+		slider.oninput = () => {
+			this.explorationRate = slider.value;
+			const valueLabel = document.getElementById("exploration-value");
+			valueLabel.innerHTML = `Value: ${this.explorationRate}`;
+		};
 	}
 
 	updateQTable(q, action, reward, bestNextWeight) {
@@ -55,28 +65,6 @@ export class QTable {
 		let currentAction = null;
 		const currentState = this.q[agentPosition.y][agentPosition.x];
 		let nextPosition = null;
-
-		// do {
-		// 	const rand = Math.random();
-
-		// 	if (rand <= this.explorationRate) {
-		// 		console.log("rand");
-		// 		const randomIndex = Math.floor(Math.random() * moves.length);
-		// 		currentAction = moves[randomIndex];
-		// 	} else {
-		// 		currentAction = this.getBestAction(currentState)[0];
-		// 	}
-
-		// 	nextPosition = board.getNextPosition(agentPosition, currentAction);
-		// 	const nextState = this.q[nextPosition.y][nextPosition.x];
-		// 	const [_, bestNextWeight] = this.getBestAction(nextState);
-
-		// 	if (!this.arePositionsEqual(nextPosition, this.previousPosition)) {
-		// 		this.updateQTable(currentState, currentAction, board.getReward(nextPosition), bestNextWeight);
-		// 	}
-		// } while (this.arePositionsEqual(nextPosition, this.previousPosition));
-
-		// With move repetition allowed
 
 		if (this.shouldExplore()) {
 			currentAction = this.getRandomAction();

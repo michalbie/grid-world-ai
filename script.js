@@ -1,5 +1,4 @@
-import { Board } from "./Board.js";
-import { MazeGenerator } from "./MazeGenerator.js";
+import { Game } from "./Game.js";
 
 // 5x5 board
 // const recipe = [
@@ -24,42 +23,4 @@ import { MazeGenerator } from "./MazeGenerator.js";
 // 	["w", "w", "w", "w", "w", "w", "w", "w", "w", "w"],
 // ];
 
-const mazeGenerator = new MazeGenerator();
-const gameTickrate = 50;
-
-let interval = null;
-let recipe = JSON.parse(localStorage.getItem("recipe")) || mazeGenerator.generateMaze();
-const board = new Board(10, recipe);
-
-const startGame = () => {
-	const agent = board.getAgent();
-
-	interval = setInterval(() => {
-		const move = agent.makeMove(board, board.getAgentPosition());
-		board.moveAgent(move);
-		const won = board.checkIfWon();
-
-		if (won) {
-			clearInterval(interval);
-			startGame();
-		}
-	}, gameTickrate);
-};
-
-// Setup buttons
-document.getElementById("start-button").onclick = () => {
-	!interval && startGame();
-};
-document.getElementById("reset-button").onclick = startGame;
-document.getElementById("reset-table-button").onclick = () => {
-	localStorage.removeItem("qTable");
-	window.location.reload();
-};
-document.getElementById("stop-button").onclick = () => {
-	clearInterval(interval);
-	interval = null;
-};
-document.getElementById("generate-maze").onclick = () => {
-	recipe = mazeGenerator.generateMaze();
-	window.location.reload();
-};
+const game = new Game();
