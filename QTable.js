@@ -30,6 +30,9 @@ export class QTable {
 	initializeExplorationSlider() {
 		const slider = document.getElementById("exploration-slider");
 		slider.value = this.explorationRate;
+		const valueLabel = document.getElementById("exploration-value");
+		valueLabel.innerHTML = `Value: ${this.explorationRate}`;
+
 		slider.oninput = () => {
 			this.explorationRate = slider.value;
 			const valueLabel = document.getElementById("exploration-value");
@@ -53,7 +56,7 @@ export class QTable {
 	}
 
 	shouldExplore() {
-		return Math.random() <= this.explorationRate;
+		return Math.random() < this.explorationRate;
 	}
 
 	getRandomAction() {

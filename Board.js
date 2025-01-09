@@ -26,7 +26,7 @@ export class Board {
 		this.agent = null;
 		this.board = this.generateBoard(recipe);
 		this.hasWon = false;
-		this.drawBoard(this.board);
+		this.drawBoard(this.board, true);
 	}
 
 	getAgent() {
@@ -45,10 +45,12 @@ export class Board {
 		return board;
 	}
 
-	drawBoard(board) {
+	drawBoard(board, drawAll = false) {
 		for (let i = 0; i < this.dimensions; i++) {
 			for (let j = 0; j < this.dimensions; j++) {
-				board[i][j].draw(j, i, this.recipe[0].length);
+				if (this.board[i][j].type === "agent" || drawAll) {
+					board[i][j].draw(j, i, this.recipe[0].length);
+				}
 			}
 		}
 	}
@@ -114,16 +116,27 @@ export class Board {
 	updateBoard(agentPosition, nextPosition) {
 		const agent = this.board[agentPosition.y][agentPosition.x];
 		const next = this.board[nextPosition.y][nextPosition.x];
-		const wasHole = this.recipe[agentPosition.y][agentPosition.x] === "h";
+		const currentPositionOriginal = this.recipe[agentPosition.y][agentPosition.x];
 
 		if (next.type !== "wall") {
-			this.board[agentPosition.y][agentPosition.x] = wasHole ? new Hole(rewards.hole) : new Empty(rewards.empty);
 			this.board[nextPosition.y][nextPosition.x] = agent;
-			this.drawBoard(this.board);
 
-			if (next.type === "hole") {
+			// Reset the agent's previous position to its original type
+			if (currentPositionOriginal !== "a") {
+				this.board[agentPosition.y][agentPosition.x] = this.getObject(currentPositionOriginal);
+			} else {
+				this.board[agentPosition.y][agentPosition.x] = this.getObject("o");
+			}
+
+			this.board[agentPosition.y][agentPosition.x].draw(agentPosition.x, agentPosition.y, this.recipe[0].length);
+
+			if (next.type === "hole" || next.type === "goal") {
+				this.board[nextPosition.y][nextPosition.x] = this.getObject(this.recipe[nextPosition.y][nextPosition.x]);
+				this.board[nextPosition.y][nextPosition.x].draw(nextPosition.x, nextPosition.y, this.recipe[0].length);
 				this.resetBoard();
 			}
+
+			this.drawBoard(this.board);
 		}
 	}
 
@@ -136,7 +149,7 @@ export class Board {
 	resetBoard() {
 		this.clearBoard();
 		this.board = this.generateBoard(this.recipe);
-		this.drawBoard(this.board);
+		this.drawBoard(this.board, true);
 	}
 
 	checkIfWon() {

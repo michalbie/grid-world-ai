@@ -3,7 +3,7 @@ import { MazeGenerator } from "./MazeGenerator.js";
 import { StatesLibrary } from "./StatesLibrary.js";
 import { QTable } from "./QTable.js";
 
-const gameTickrate = 50;
+const gameTickrate = 20;
 
 export class Game {
 	constructor() {
@@ -12,7 +12,6 @@ export class Game {
 		this.board = new Board(10, this.recipe);
 		this.mazeGenerator = new MazeGenerator();
 		this.statesLibrary = new StatesLibrary(this.restoreFromMemento.bind(this));
-		this.hasWon = false; // Example additional state
 
 		this.setupButtons();
 	}

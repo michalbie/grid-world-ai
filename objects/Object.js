@@ -22,6 +22,7 @@ export class Object {
 		var canvasWidth = c.width;
 		const tileSize = canvasWidth / mapSize;
 
+		ctx.clearRect(tileSize * x, tileSize * y, tileSize, tileSize);
 		ctx.fillStyle = "green";
 		ctx.fillRect(tileSize * x, tileSize * y, tileSize, tileSize);
 
