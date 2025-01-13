@@ -15,11 +15,6 @@ export class Agent extends Object {
 		return this.makeQTableMove(board, agentPosition);
 	}
 
-	makeRandomMove() {
-		const randomIndex = Math.floor(Math.random() * moves.length);
-		return moves[randomIndex];
-	}
-
 	makeQTableMove(board, agentPosition) {
 		const action = this.qTable.chooseAction(board, agentPosition);
 		return moves[moves.indexOf(action)];

@@ -1,23 +1,4 @@
-import { Agent } from "./objects/Agent.js";
-import { Empty } from "./objects/Empty.js";
-import { Goal } from "./objects/Goal.js";
-import { Hole } from "./objects/Hole.js";
-import { Wall } from "./objects/Wall.js";
-
-const objectsMapper = {
-	a: 0,
-	g: 1,
-	h: 2,
-	w: 3,
-	o: 4,
-};
-
-const rewards = {
-	goal: 5,
-	hole: -15,
-	wall: -1,
-	empty: -0.1,
-};
+import { ObjectFactory } from "./object-factory/ObjectFactory.js";
 
 export class Board {
 	constructor(dimensions, recipe) {
@@ -56,24 +37,11 @@ export class Board {
 	}
 
 	getObject(type) {
-		type = objectsMapper[type];
-		switch (type) {
-			case 0:
-				if (this.agent) {
-					return this.agent;
-				}
-				const agent = new Agent(0);
-				this.agent = agent;
-				return agent;
-			case 1:
-				return new Goal(rewards.goal);
-			case 2:
-				return new Hole(rewards.hole);
-			case 3:
-				return new Wall(rewards.wall);
-			case 4:
-				return new Empty(rewards.empty);
+		const newObject = ObjectFactory.createObject(type, this.agent);
+		if (type === "a") {
+			this.agent = newObject;
 		}
+		return newObject;
 	}
 
 	getReward(position) {

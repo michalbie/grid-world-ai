@@ -45,12 +45,6 @@ export class QTable {
 		localStorage.setItem("qTable", JSON.stringify(this.q));
 	}
 
-	getBestAction(state) {
-		const maxValue = Math.max(...Object.values(state));
-		const bestActions = Object.entries(state).filter(([_, value]) => value === maxValue);
-		return bestActions[Math.floor(Math.random() * bestActions.length)];
-	}
-
 	arePositionsEqual(a, b) {
 		return a !== null && b !== null ? a.x === b.x && a.y === b.y : false;
 	}
@@ -62,6 +56,12 @@ export class QTable {
 	getRandomAction() {
 		const randomIndex = Math.floor(Math.random() * moves.length);
 		return moves[randomIndex];
+	}
+
+	getBestAction(state) {
+		const maxValue = Math.max(...Object.values(state));
+		const bestActions = Object.entries(state).filter(([_, value]) => value === maxValue);
+		return bestActions[Math.floor(Math.random() * bestActions.length)];
 	}
 
 	chooseAction(board, agentPosition) {

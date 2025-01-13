@@ -7,6 +7,9 @@ const gameTickrate = 20;
 
 export class Game {
 	constructor() {
+		if (Game.instance) return Game.instance;
+
+		Game.instance = this;
 		this.gameInterval = null;
 		this.recipe = new MazeGenerator().generateMaze();
 		this.board = new Board(10, this.recipe);
@@ -74,20 +77,16 @@ export class Game {
 
 	// Save the Game state as a memento
 	saveToMemento() {
-		// Retrieve the existing mementos or initialize an empty array
 		const savedGames = JSON.parse(localStorage.getItem("savedGames")) || [];
-
-		// Serialize the current state of the Game object
 		const snapshot = JSON.stringify(this);
 
-		// Enforce a limit of 10 saved games
+
 		if (savedGames.length >= 10) {
-			savedGames.shift(); // Remove the oldest save
+			savedGames.shift();
 		}
 
 		savedGames.push(snapshot);
-
-		// Save updated mementos to localStorage
+		
 		localStorage.setItem("savedGames", JSON.stringify(savedGames));
 		console.log("Game state saved to memento.");
 	}
